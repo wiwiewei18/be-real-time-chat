@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import { Server as HttpServer } from "http";
 import { ChatModule } from "../../modules/chat/v1/chat.module";
 import { ChatListener } from "../../modules/chat/v1/listeners/chat.listener";
+import { Authenticator } from "../../modules/auth/v1/middlewares/authenticator.middleware";
 
 export class Socket {
   public io: Server;
@@ -22,6 +23,8 @@ export class Socket {
   }
 
   private setupListeners() {
+    this.io.use(Authenticator.protectSocket());
+
     this.io.on("connection", (socket) => {
       console.log(`User with socket id ${socket.id} connected successfully`);
 
