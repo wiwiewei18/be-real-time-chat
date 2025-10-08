@@ -2,14 +2,16 @@ import { StatusCode } from "../../../../shared/http/constants/StatusCode";
 import CustomError from "../../../../shared/http/utils/CustomError";
 import { Hasher } from "../../../../shared/utils/hasher";
 import { JWT } from "../../../../shared/utils/jwt";
+import { User } from "../domains/user.domain";
+import { UserDTOType } from "../dtos/user.dto";
+import { UserMapper } from "../mappers/user.mapper";
 import { UserRepo } from "../repos/user.repo";
-import { UserModelType } from "../models/user.model";
 import { SignInInput } from "../validations/signIn.validation";
 import { SignUpInput } from "../validations/signUp.validation";
 
 type SignInOutput = {
   token: string;
-  user: Omit<UserModelType, "password">;
+  user: UserDTOType;
 };
 
 export class AuthService {
@@ -24,9 +26,14 @@ export class AuthService {
     }
 
     const hashedPassword = await Hasher.hash(signUpInput.password);
-    signUpInput.password = hashedPassword;
 
-    await this.userRepo.create(signUpInput);
+    const user = new User(
+      signUpInput.name,
+      signUpInput.username,
+      hashedPassword
+    );
+
+    await this.userRepo.create(user);
   };
 
   public signIn = async (signInInput: SignInInput): Promise<SignInOutput> => {
@@ -45,8 +52,9 @@ export class AuthService {
 
     const token = JWT.sign({ userId: user.id, username: user.username });
 
-    const { password, ...userWithoutPassword } = user;
-
-    return { token, user: userWithoutPassword };
+    return {
+      token,
+      user: UserMapper.toDTO(user),
+    };
   };
 }

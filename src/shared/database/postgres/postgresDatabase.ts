@@ -2,10 +2,10 @@ import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Database } from "../database";
 
-export type DBClient = ReturnType<typeof drizzle>;
+export type PostgresClient = ReturnType<typeof drizzle>;
 
 export class PostgresDatabase implements Database {
-  private static instance: DBClient;
+  private static instance: PostgresClient;
 
   constructor() {
     if (!PostgresDatabase.instance) {
@@ -22,7 +22,7 @@ export class PostgresDatabase implements Database {
     }
   }
 
-  public getClient(): DBClient {
+  public getClient(): PostgresClient {
     return PostgresDatabase.instance;
   }
 }
