@@ -2,7 +2,7 @@ import { Socket } from "socket.io";
 import { JWT } from "../../../../shared/utils/jwt";
 
 export class Authenticator {
-  static protectSocket() {
+  static protectWebSocket() {
     return (socket: Socket, next: (err?: Error) => void) => {
       const token =
         socket.handshake.auth.token || socket.handshake.headers.token;

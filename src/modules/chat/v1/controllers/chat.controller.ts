@@ -5,13 +5,13 @@ import { Message } from "../types/message.type";
 export class ChatController {
   constructor(private chatService: ChatService) {}
 
-  public registerUser = (socket: Socket, userId: string) => {
-    const socketId = socket.id;
+  public registerUser = (webSocket: Socket, userId: string) => {
+    const webSocketId = webSocket.id;
 
-    this.chatService.registerUser(userId, socketId);
+    this.chatService.registerUser(userId, webSocketId);
 
     console.log(
-      `User with socket id ${socketId} registered as ${userId} successfully`
+      `User with web socket id ${webSocketId} registered as ${userId} successfully`
     );
   };
 
@@ -25,11 +25,13 @@ export class ChatController {
     );
   };
 
-  public disconnect = (socket: Socket) => {
-    const socketId = socket.id;
+  public disconnect = (webSocket: Socket) => {
+    const webSocketId = webSocket.id;
 
-    this.chatService.unregisterUser(socketId);
+    this.chatService.unregisterUser(webSocketId);
 
-    console.log(`User with socket id ${socketId} disconnected successfully`);
+    console.log(
+      `User with web socket id ${webSocketId} disconnected successfully`
+    );
   };
 }

@@ -8,13 +8,13 @@ export class ChatService {
     this.onlineUsers = new Map();
   }
 
-  public registerUser = (userId: string, socketId: string): void => {
-    this.onlineUsers.set(userId, socketId);
+  public registerUser = (userId: string, webSocketId: string): void => {
+    this.onlineUsers.set(userId, webSocketId);
   };
 
-  public unregisterUser = (socketId: string): void => {
-    for (let [userId, registeredSocketId] of this.onlineUsers.entries()) {
-      if (registeredSocketId === socketId) {
+  public unregisterUser = (webSocketId: string): void => {
+    for (let [userId, registeredWebSocketId] of this.onlineUsers.entries()) {
+      if (registeredWebSocketId === webSocketId) {
         this.onlineUsers.delete(userId);
         break;
       }
@@ -24,10 +24,10 @@ export class ChatService {
   public sendPrivateMessage = (io: Server, message: Message): void => {
     const { receiverId, senderId, content } = message;
 
-    const receiverSocketId = this.onlineUsers.get(receiverId);
+    const receiverWebSocketId = this.onlineUsers.get(receiverId);
 
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("private_message", {
+    if (receiverWebSocketId) {
+      io.to(receiverWebSocketId).emit("private_message", {
         senderId,
         content,
         timestamp: new Date().toISOString(),

@@ -4,7 +4,7 @@ import { ChatModule } from "../../modules/chat/v1/chat.module";
 import { ChatListener } from "../../modules/chat/v1/listeners/chat.listener";
 import { Authenticator } from "../../modules/auth/v1/middlewares/authenticator.middleware";
 
-export class Socket {
+export class WebSocket {
   public io: Server;
   private port: number;
   private chatListener: ChatListener;
@@ -23,12 +23,14 @@ export class Socket {
   }
 
   private setupListeners() {
-    this.io.use(Authenticator.protectSocket());
+    this.io.use(Authenticator.protectWebSocket());
 
-    this.io.on("connection", (socket) => {
-      console.log(`User with socket id ${socket.id} connected successfully`);
+    this.io.on("connection", (webSocket) => {
+      console.log(
+        `User with Web Socket id ${webSocket.id} connected successfully`
+      );
 
-      this.chatListener.initializeListeners(socket, this.io);
+      this.chatListener.initializeListeners(webSocket, this.io);
     });
   }
 }
