@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { BaseController } from "../../../../shared/http/controllers/base.controller";
 import { AsyncErrorHandler } from "../../../../shared/http/utils/AsyncErrorHandler";
 import { AuthService } from "../services/auth.service";
-import { SignInInput, SignUpInput } from "../validations/auth.validation";
+import { SignUpInput } from "../validations/signUp.validation";
+import { SignInInput } from "../validations/signIn.validation";
 
 export class AuthController extends BaseController {
   constructor(private authService: AuthService) {

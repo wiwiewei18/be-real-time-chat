@@ -1,10 +1,8 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth.controller";
 import { Validator } from "../../../../shared/http/middlewares/validator.middleware";
-import {
-  signInBodySchema,
-  signUpBodySchema,
-} from "../validations/auth.validation";
+import { signUpBodySchema } from "../validations/signUp.validation";
+import { signInBodySchema } from "../validations/signIn.validation";
 
 export class AuthRouter {
   public router: Router;

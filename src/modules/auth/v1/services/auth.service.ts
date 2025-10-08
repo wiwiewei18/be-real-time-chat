@@ -4,7 +4,8 @@ import { Hasher } from "../../../../shared/utils/hasher";
 import { JWT } from "../../../../shared/utils/jwt";
 import { UserRepo } from "../repos/user.repo";
 import { UserSchemaType } from "../schemas/user.schema";
-import { SignInInput, SignUpInput } from "../validations/auth.validation";
+import { SignInInput } from "../validations/signIn.validation";
+import { SignUpInput } from "../validations/signUp.validation";
 
 type SignInOutput = {
   token: string;
