@@ -1,3 +1,5 @@
+import { DBClient } from "./postgres/postgresDatabase";
+
 export interface Database {
-  getClient(): any;
+  getClient(): DBClient;
 }
