@@ -3,13 +3,13 @@ import CustomError from "../../../../shared/http/utils/CustomError";
 import { Hasher } from "../../../../shared/utils/hasher";
 import { JWT } from "../../../../shared/utils/jwt";
 import { UserRepo } from "../repos/user.repo";
-import { UserSchemaType } from "../schemas/user.schema";
+import { UserModelType } from "../models/user.model";
 import { SignInInput } from "../validations/signIn.validation";
 import { SignUpInput } from "../validations/signUp.validation";
 
 type SignInOutput = {
   token: string;
-  user: Omit<UserSchemaType, "password">;
+  user: Omit<UserModelType, "password">;
 };
 
 export class AuthService {
