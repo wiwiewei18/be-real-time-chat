@@ -25,13 +25,12 @@ export class AuthService {
       throw new CustomError(StatusCode.BAD_REQUEST, "Username already exists");
     }
 
-    const hashedPassword = await Hasher.hash(signUpInput.password);
-
     const user = new User(
       signUpInput.name,
       signUpInput.username,
-      hashedPassword
+      signUpInput.password
     );
+    await user.hashPassword(Hasher.hash);
 
     await this.userRepo.create(user);
   };
