@@ -4,6 +4,7 @@ import cors from "cors";
 import { ErrorController } from "../http/controllers/error.controller";
 import { HealthModule } from "../../modules/health/v1/health.module";
 import { AuthModule } from "../../modules/auth/v1/auth.module";
+import { FriendModule } from "../../modules/friend/v1/friend.module";
 
 export class App {
   public app: Application;
@@ -26,6 +27,7 @@ export class App {
   private setupRoutes() {
     this.app.use("/api/v1/health", HealthModule.buildRouter());
     this.app.use("/api/v1/auth", AuthModule.buildRouter());
+    this.app.use("/api/v1/friends", FriendModule.buildRouter());
     this.app.all("*path", this.errorController.handleNotFoundRoute);
     this.app.use(this.errorController.handleGlobalError);
   }

@@ -13,6 +13,12 @@ export class PostgresFriendshipRepo implements FriendshipRepo {
     this.client = db.getClient();
   }
 
+  public async create(friendship: Friendship): Promise<void> {
+    await this.client
+      .insert(friendshipModel)
+      .values(FriendshipMapper.toPersistence(friendship));
+  }
+
   public async getFriendshipBetweenTwoUsers(
     user1Id: string,
     user2Id: string
