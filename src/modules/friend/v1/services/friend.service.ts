@@ -1,7 +1,7 @@
 import { StatusCode } from "../../../../shared/http/constants/StatusCode";
 import CustomError from "../../../../shared/http/utils/CustomError";
 import { UserRepo } from "../../../auth/v1/repos/user.repo";
-import { Friendship } from "../domain/friendship.domain";
+import { Friendship } from "../domains/friendship.domain";
 import { FriendshipRepo } from "../repos/friend.repo";
 import { sendFriendRequestInput } from "../validations/sendFriendRequest.validation";
 

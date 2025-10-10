@@ -1,4 +1,4 @@
-import { Friendship, FriendshipStatus } from "../domain/friendship.domain";
+import { Friendship, FriendshipStatus } from "../domains/friendship.domain";
 import { FriendshipModelType } from "../models/friendship.model";
 
 export class FriendshipMapper {

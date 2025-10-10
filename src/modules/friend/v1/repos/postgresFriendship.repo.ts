@@ -3,7 +3,7 @@ import { Database } from "../../../../shared/database/database";
 import { PostgresClient } from "../../../../shared/database/postgres/postgresDatabase";
 import { friendshipModel } from "../models/friendship.model";
 import { FriendshipRepo } from "./friend.repo";
-import { Friendship } from "../domain/friendship.domain";
+import { Friendship } from "../domains/friendship.domain";
 import { FriendshipMapper } from "../mappers/friendship.mapper";
 
 export class PostgresFriendshipRepo implements FriendshipRepo {

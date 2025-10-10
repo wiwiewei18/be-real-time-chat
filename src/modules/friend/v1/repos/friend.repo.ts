@@ -1,4 +1,4 @@
-import { Friendship } from "../domain/friendship.domain";
+import { Friendship } from "../domains/friendship.domain";
 
 export interface FriendshipRepo {
   create(friendship: Friendship): Promise<void>;
