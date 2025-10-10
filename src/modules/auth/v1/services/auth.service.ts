@@ -41,9 +41,9 @@ export class AuthService {
       throw new CustomError(StatusCode.UNAUTHORIZED, "Invalid credentials");
     }
 
-    const isPasswordValid = await Hasher.compare(
+    const isPasswordValid = await user.comparePassword(
       signInInput.password,
-      user.password
+      Hasher.compare
     );
     if (!isPasswordValid) {
       throw new CustomError(StatusCode.UNAUTHORIZED, "Invalid credentials");

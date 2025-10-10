@@ -11,4 +11,11 @@ export class User {
   ): Promise<void> {
     this.password = await hashingFn(this.password);
   }
+
+  public async comparePassword(
+    password: string,
+    compareFn: (password: string, hashed: string) => Promise<boolean>
+  ): Promise<boolean> {
+    return compareFn(password, this.password);
+  }
 }
