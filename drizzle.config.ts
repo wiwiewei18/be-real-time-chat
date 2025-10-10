@@ -8,7 +8,7 @@ export default defineConfig({
     database: process.env.DB_NAME as string,
     ssl: false,
   },
-  schema: "./src/modules/**/schemas/*.ts",
+  schema: "./src/modules/**/models/*.ts",
   dialect: "postgresql",
   out: "./src/shared/database/postgres/migrations",
 });

@@ -8,6 +8,13 @@
       "when": 1759378966898,
       "tag": "0000_volatile_silk_fever",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1760082524597,
+      "tag": "0001_gigantic_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }
