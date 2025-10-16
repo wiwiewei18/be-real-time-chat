@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { BaseController } from "../../../../shared/http/controllers/base.controller";
 import { AsyncErrorHandler } from "../../../../shared/http/utils/AsyncErrorHandler";
 import { FriendService } from "../services/friend.service";
-import { sendFriendRequestInput } from "../validations/sendFriendRequest.validation";
+import { SendFriendRequestInput } from "../validations/sendFriendRequest.validation";
+import { AcceptFriendRequestInput } from "../validations/acceptFriendRequest.validation";
 
 export class FriendController extends BaseController {
   constructor(private friendService: FriendService) {
@@ -11,7 +12,7 @@ export class FriendController extends BaseController {
 
   public sendFriendRequest = AsyncErrorHandler(
     async (req: Request, res: Response) => {
-      const sendFriendRequestInput: sendFriendRequestInput = req.body;
+      const sendFriendRequestInput: SendFriendRequestInput = req.body;
 
       await this.friendService.sendFriendRequest(
         sendFriendRequestInput,
@@ -19,6 +20,16 @@ export class FriendController extends BaseController {
       );
 
       this.ok(res, "Friend request sent successfully");
+    }
+  );
+
+  public acceptFriendRequest = AsyncErrorHandler(
+    async (req: Request, res: Response) => {
+      const acceptFriendRequestInput = req.params as AcceptFriendRequestInput;
+
+      await this.friendService.acceptFriendRequest(acceptFriendRequestInput);
+
+      this.ok(res, "Friend request accepted successfully");
     }
   );
 }

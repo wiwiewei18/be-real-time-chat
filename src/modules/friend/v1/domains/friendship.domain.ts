@@ -10,4 +10,12 @@ export class Friendship {
   public getStatus(): FriendshipStatus {
     return this.status;
   }
+
+  public accept(): void {
+    if (this.status !== "pending") {
+      throw new Error("Friendship cannot be accepted in current state");
+    }
+
+    this.status = "accepted";
+  }
 }

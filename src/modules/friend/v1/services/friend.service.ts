@@ -2,8 +2,9 @@ import { StatusCode } from "../../../../shared/http/constants/StatusCode";
 import CustomError from "../../../../shared/http/utils/CustomError";
 import { UserRepo } from "../../../auth/v1/repos/user.repo";
 import { Friendship } from "../domains/friendship.domain";
-import { FriendshipRepo } from "../repos/friend.repo";
-import { sendFriendRequestInput } from "../validations/sendFriendRequest.validation";
+import { FriendshipRepo } from "../repos/friendship.repo";
+import { AcceptFriendRequestInput } from "../validations/acceptFriendRequest.validation";
+import { SendFriendRequestInput } from "../validations/sendFriendRequest.validation";
 
 export class FriendService {
   constructor(
@@ -12,7 +13,7 @@ export class FriendService {
   ) {}
 
   public sendFriendRequest = async (
-    sendFriendRequestInput: sendFriendRequestInput,
+    sendFriendRequestInput: SendFriendRequestInput,
     username: string
   ): Promise<void> => {
     const requester = await this.userRepo.getUserByUsername(username);
@@ -50,6 +51,28 @@ export class FriendService {
 
     const friendship = new Friendship(requester.id!, receiver.id!);
 
-    await this.friendshipRepo.create(friendship);
+    await this.friendshipRepo.save(friendship);
+  };
+
+  public acceptFriendRequest = async (
+    acceptFriendRequestInput: AcceptFriendRequestInput
+  ): Promise<void> => {
+    const friendship = await this.friendshipRepo.getFriendshipById(
+      acceptFriendRequestInput.friendRequestId
+    );
+    if (!friendship) {
+      throw new CustomError(StatusCode.NOT_FOUND, "Friend request not found");
+    }
+
+    if (friendship.getStatus() !== "pending") {
+      throw new CustomError(
+        StatusCode.BAD_REQUEST,
+        "Friendship cannot be accepted in current state"
+      );
+    }
+
+    friendship.accept();
+
+    await this.friendshipRepo.save(friendship);
   };
 }
