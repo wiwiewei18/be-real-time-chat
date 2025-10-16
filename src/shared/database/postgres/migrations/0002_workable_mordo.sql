@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "friendship_requester_receiver_idx" ON "friendship" USING btree ("requester_id","receiver_id");
