@@ -4,6 +4,7 @@ import { AsyncErrorHandler } from "../../../../shared/http/utils/AsyncErrorHandl
 import { FriendService } from "../services/friend.service";
 import { SendFriendRequestInput } from "../validations/sendFriendRequest.validation";
 import { AcceptFriendRequestInput } from "../validations/acceptFriendRequest.validation";
+import { RejectFriendRequestInput } from "../validations/rejectFriendRequest.validation";
 
 export class FriendController extends BaseController {
   constructor(private friendService: FriendService) {
@@ -30,6 +31,16 @@ export class FriendController extends BaseController {
       await this.friendService.acceptFriendRequest(acceptFriendRequestInput);
 
       this.ok(res, "Friend request accepted successfully");
+    }
+  );
+
+  public rejectFriendRequest = AsyncErrorHandler(
+    async (req: Request, res: Response) => {
+      const rejectFriendRequestInput = req.params as RejectFriendRequestInput;
+
+      await this.friendService.rejectFriendRequest(rejectFriendRequestInput);
+
+      this.ok(res, "Friend request rejected successfully");
     }
   );
 }

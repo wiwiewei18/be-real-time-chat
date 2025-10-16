@@ -4,6 +4,7 @@ import { Authenticator } from "../../../auth/v1/middlewares/authenticator.middle
 import { Validator } from "../../../../shared/http/middlewares/validator.middleware";
 import { sendFriendRequestBodySchema } from "../validations/sendFriendRequest.validation";
 import { acceptFriendRequestParamsSchema } from "../validations/acceptFriendRequest.validation";
+import { rejectFriendRequestParamsSchema } from "../validations/rejectFriendRequest.validation";
 
 export class FriendRouter {
   public router: Router;
@@ -15,7 +16,7 @@ export class FriendRouter {
 
   private initializeRoutes() {
     this.router
-      .route("/request")
+      .route("/requests")
       .post(
         Authenticator.protectHTTP(),
         Validator.validateBody(sendFriendRequestBodySchema),
@@ -23,11 +24,19 @@ export class FriendRouter {
       );
 
     this.router
-      .route("/request/:friendRequestId/accept")
+      .route("/requests/:friendRequestId/accept")
       .post(
         Authenticator.protectHTTP(),
         Validator.validateParams(acceptFriendRequestParamsSchema),
         this.friendController.acceptFriendRequest
+      );
+
+    this.router
+      .route("/requests/:friendRequestId/reject")
+      .post(
+        Authenticator.protectHTTP(),
+        Validator.validateParams(rejectFriendRequestParamsSchema),
+        this.friendController.rejectFriendRequest
       );
   }
 }

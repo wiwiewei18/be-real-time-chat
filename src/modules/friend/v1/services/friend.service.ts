@@ -4,6 +4,7 @@ import { UserRepo } from "../../../auth/v1/repos/user.repo";
 import { Friendship } from "../domains/friendship.domain";
 import { FriendshipRepo } from "../repos/friendship.repo";
 import { AcceptFriendRequestInput } from "../validations/acceptFriendRequest.validation";
+import { RejectFriendRequestInput } from "../validations/rejectFriendRequest.validation";
 import { SendFriendRequestInput } from "../validations/sendFriendRequest.validation";
 
 export class FriendService {
@@ -72,6 +73,28 @@ export class FriendService {
     }
 
     friendship.accept();
+
+    await this.friendshipRepo.save(friendship);
+  };
+
+  public rejectFriendRequest = async (
+    rejectFriendRequestInput: RejectFriendRequestInput
+  ): Promise<void> => {
+    const friendship = await this.friendshipRepo.getFriendshipById(
+      rejectFriendRequestInput.friendRequestId
+    );
+    if (!friendship) {
+      throw new CustomError(StatusCode.NOT_FOUND, "Friend request not found");
+    }
+
+    if (friendship.getStatus() !== "pending") {
+      throw new CustomError(
+        StatusCode.BAD_REQUEST,
+        "Friendship cannot be rejected in current state"
+      );
+    }
+
+    friendship.reject();
 
     await this.friendshipRepo.save(friendship);
   };

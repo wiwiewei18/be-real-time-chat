@@ -18,4 +18,12 @@ export class Friendship {
 
     this.status = "accepted";
   }
+
+  public reject(): void {
+    if (this.status !== "pending") {
+      throw new Error("Friendship cannot be rejected in current state");
+    }
+
+    this.status = "rejected";
+  }
 }
