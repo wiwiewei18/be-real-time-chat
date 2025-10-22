@@ -22,6 +22,20 @@
       "when": 1760596244001,
       "tag": "0002_workable_mordo",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1760752931573,
+      "tag": "0003_closed_mentor",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1761113750123,
+      "tag": "0004_crazy_micromacro",
+      "breakpoints": true
     }
   ]
 }
