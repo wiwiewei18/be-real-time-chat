@@ -17,6 +17,16 @@ export class PostgresUserRepo implements UserRepo {
     await this.client.insert(userModel).values(UserMapper.toPersistence(user));
   }
 
+  public async getUserByUserId(userId: string): Promise<User | null> {
+    const user = await this.client
+      .select()
+      .from(userModel)
+      .where(eq(userModel.id, userId))
+      .limit(1);
+
+    return user.length ? UserMapper.toDomain(user[0]) : null;
+  }
+
   public async getUserByUsername(username: string): Promise<User | null> {
     const user = await this.client
       .select()
