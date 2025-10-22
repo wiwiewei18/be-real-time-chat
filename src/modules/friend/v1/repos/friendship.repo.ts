@@ -1,4 +1,4 @@
-import { Friendship } from "../domains/friendship.domain";
+import { Friendship, FriendshipStatus } from "../domains/friendship.domain";
 
 export interface FriendshipRepo {
   save(friendship: Friendship): Promise<void>;
@@ -7,4 +7,8 @@ export interface FriendshipRepo {
     user1Id: string,
     user2Id: string
   ): Promise<Friendship | null>;
+  getFriendshipsByUserIdAndStatus(
+    userId: string,
+    status: FriendshipStatus
+  ): Promise<Friendship[]>;
 }

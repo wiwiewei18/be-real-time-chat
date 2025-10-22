@@ -24,6 +24,19 @@ export class FriendController extends BaseController {
     }
   );
 
+  public getFriendRequests = AsyncErrorHandler(
+    async (req: Request, res: Response) => {
+      const getFriendRequestsOutput =
+        await this.friendService.getFriendRequests((req as any).user.userId);
+
+      this.ok(
+        res,
+        "Friend requests list fetched successfully",
+        getFriendRequestsOutput
+      );
+    }
+  );
+
   public acceptFriendRequest = AsyncErrorHandler(
     async (req: Request, res: Response) => {
       const acceptFriendRequestInput = req.params as AcceptFriendRequestInput;

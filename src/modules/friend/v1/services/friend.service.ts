@@ -1,11 +1,17 @@
 import { StatusCode } from "../../../../shared/http/constants/StatusCode";
 import CustomError from "../../../../shared/http/utils/CustomError";
 import { UserRepo } from "../../../auth/v1/repos/user.repo";
-import { Friendship } from "../domains/friendship.domain";
+import { Friendship, FriendshipStatus } from "../domains/friendship.domain";
+import { FriendshipDTOType } from "../dtos/friendship.dto";
+import { FriendshipMapper } from "../mappers/friendship.mapper";
 import { FriendshipRepo } from "../repos/friendship.repo";
 import { AcceptFriendRequestInput } from "../validations/acceptFriendRequest.validation";
 import { RejectFriendRequestInput } from "../validations/rejectFriendRequest.validation";
 import { SendFriendRequestInput } from "../validations/sendFriendRequest.validation";
+
+type GetFriendRequestsOutput = {
+  friendRequests: FriendshipDTOType[];
+};
 
 export class FriendService {
   constructor(
@@ -53,6 +59,37 @@ export class FriendService {
     const friendship = new Friendship(requester.id!, receiver.id!);
 
     await this.friendshipRepo.save(friendship);
+  };
+
+  public getFriendRequests = async (
+    userId: string
+  ): Promise<GetFriendRequestsOutput> => {
+    const user = await this.userRepo.getUserByUserId(userId);
+    if (!user) {
+      throw new CustomError(StatusCode.NOT_FOUND, "User not found");
+    }
+
+    const friendshipList =
+      await this.friendshipRepo.getFriendshipsByUserIdAndStatus(
+        userId,
+        FriendshipStatus.Pending
+      );
+    if (!friendshipList.length) {
+      throw new CustomError(
+        StatusCode.NOT_FOUND,
+        "Friend requests list not found"
+      );
+    }
+
+    return {
+      friendRequests: friendshipList.map((friendship) =>
+        FriendshipMapper.toDTO(
+          friendship,
+          friendship.getRequester(),
+          friendship.getReceiver()
+        )
+      ),
+    };
   };
 
   public acceptFriendRequest = async (

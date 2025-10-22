@@ -21,6 +21,10 @@ export class FriendRouter {
         Authenticator.protectHTTP(),
         Validator.validateBody(sendFriendRequestBodySchema),
         this.friendController.sendFriendRequest
+      )
+      .get(
+        Authenticator.protectHTTP(),
+        this.friendController.getFriendRequests
       );
 
     this.router
