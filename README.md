@@ -7,8 +7,8 @@ Features:
   ✔ Send friend request,
   ✔ Accept friend request,
   ✔ Reject friend request,
-  ✔ Get friend requests list,
-  ✔ Get friends list,
+  - Get friend request list,
+  - Get friend list,
   - Remove friend
 - Chat: Create
   - new chat,
