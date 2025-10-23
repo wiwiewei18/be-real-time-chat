@@ -9,6 +9,10 @@ import { AcceptFriendRequestInput } from "../validations/acceptFriendRequest.val
 import { RejectFriendRequestInput } from "../validations/rejectFriendRequest.validation";
 import { SendFriendRequestInput } from "../validations/sendFriendRequest.validation";
 
+type GetFriendsOutput = {
+  friends: FriendshipDTOType[];
+};
+
 type GetFriendRequestsOutput = {
   friendRequests: FriendshipDTOType[];
 };
@@ -18,6 +22,32 @@ export class FriendService {
     private userRepo: UserRepo,
     private friendshipRepo: FriendshipRepo
   ) {}
+
+  public getFriends = async (userId: string): Promise<GetFriendsOutput> => {
+    const user = await this.userRepo.getUserByUserId(userId);
+    if (!user) {
+      throw new CustomError(StatusCode.NOT_FOUND, "User not found");
+    }
+
+    const friendshipList =
+      await this.friendshipRepo.getFriendshipsByUserIdAndStatus(
+        userId,
+        FriendshipStatus.Accepted
+      );
+    if (!friendshipList.length) {
+      throw new CustomError(StatusCode.NOT_FOUND, "Friends list not found");
+    }
+
+    return {
+      friends: friendshipList.map((friendship) =>
+        FriendshipMapper.toDTO(
+          friendship,
+          friendship.getRequester(),
+          friendship.getReceiver()
+        )
+      ),
+    };
+  };
 
   public sendFriendRequest = async (
     sendFriendRequestInput: SendFriendRequestInput,

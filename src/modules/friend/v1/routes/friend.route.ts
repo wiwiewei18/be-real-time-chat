@@ -16,6 +16,10 @@ export class FriendRouter {
 
   private initializeRoutes() {
     this.router
+      .route("/")
+      .get(Authenticator.protectHTTP(), this.friendController.getFriends);
+
+    this.router
       .route("/requests")
       .post(
         Authenticator.protectHTTP(),

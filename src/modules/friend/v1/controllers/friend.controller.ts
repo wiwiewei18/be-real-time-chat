@@ -11,6 +11,14 @@ export class FriendController extends BaseController {
     super();
   }
 
+  public getFriends = AsyncErrorHandler(async (req: Request, res: Response) => {
+    const getFriendsOutput = await this.friendService.getFriends(
+      (req as any).user.userId
+    );
+
+    this.ok(res, "Friends list fetched successfully", getFriendsOutput);
+  });
+
   public sendFriendRequest = AsyncErrorHandler(
     async (req: Request, res: Response) => {
       const sendFriendRequestInput: SendFriendRequestInput = req.body;
