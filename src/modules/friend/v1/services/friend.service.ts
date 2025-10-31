@@ -1,5 +1,8 @@
 import { StatusCode } from "../../../../shared/http/constants/StatusCode";
 import CustomError from "../../../../shared/http/utils/CustomError";
+import { User } from "../../../auth/v1/domains/user.domain";
+import { UserDTOType } from "../../../auth/v1/dtos/user.dto";
+import { UserMapper } from "../../../auth/v1/mappers/user.mapper";
 import { UserRepo } from "../../../auth/v1/repos/user.repo";
 import { Friendship, FriendshipStatus } from "../domains/friendship.domain";
 import { FriendshipDTOType } from "../dtos/friendship.dto";
@@ -10,7 +13,7 @@ import { RejectFriendRequestInput } from "../validations/rejectFriendRequest.val
 import { SendFriendRequestInput } from "../validations/sendFriendRequest.validation";
 
 type GetFriendsOutput = {
-  friends: FriendshipDTOType[];
+  friends: UserDTOType[];
 };
 
 type GetFriendRequestsOutput = {
@@ -34,16 +37,13 @@ export class FriendService {
         userId,
         FriendshipStatus.Accepted
       );
-    if (!friendshipList.length) {
-      throw new CustomError(StatusCode.NOT_FOUND, "Friends list not found");
-    }
 
     return {
       friends: friendshipList.map((friendship) =>
-        FriendshipMapper.toDTO(
-          friendship,
-          friendship.getRequester(),
-          friendship.getReceiver()
+        UserMapper.toDTO(
+          friendship.receiverId === userId
+            ? (friendship.getRequester() as User)
+            : (friendship.getReceiver() as User)
         )
       ),
     };
