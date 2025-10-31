@@ -9,6 +9,7 @@ import { FriendshipDTOType } from "../dtos/friendship.dto";
 import { FriendshipMapper } from "../mappers/friendship.mapper";
 import { FriendshipRepo } from "../repos/friendship.repo";
 import { AcceptFriendRequestInput } from "../validations/acceptFriendRequest.validation";
+import { DeleteFriendInput } from "../validations/deleteFriend.validation";
 import { RejectFriendRequestInput } from "../validations/rejectFriendRequest.validation";
 import { SendFriendRequestInput } from "../validations/sendFriendRequest.validation";
 
@@ -47,6 +48,31 @@ export class FriendService {
         )
       ),
     };
+  };
+
+  public deleteFriend = async (
+    deleteFriendInput: DeleteFriendInput,
+    userId: string
+  ): Promise<void> => {
+    const user = await this.userRepo.getUserByUserId(userId);
+    const friend = await this.userRepo.getUserByUserId(
+      deleteFriendInput.friendId
+    );
+
+    if (!user || !friend) {
+      throw new CustomError(StatusCode.NOT_FOUND, "User not found");
+    }
+
+    const friendship = await this.friendshipRepo.getFriendshipBetweenTwoUsers(
+      userId,
+      deleteFriendInput.friendId
+    );
+
+    if (!friendship) {
+      throw new CustomError(StatusCode.NOT_FOUND, "Friendship not found");
+    }
+
+    await this.friendshipRepo.delete(friendship);
   };
 
   public sendFriendRequest = async (

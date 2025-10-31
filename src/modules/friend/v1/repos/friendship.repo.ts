@@ -12,4 +12,5 @@ export interface FriendshipRepo {
     status: FriendshipStatus
   ): Promise<Friendship[]>;
   getFriendRequestsByReceiverId(receiverId: string): Promise<Friendship[]>;
+  delete(friendship: Friendship): Promise<void>;
 }

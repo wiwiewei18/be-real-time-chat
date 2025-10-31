@@ -5,6 +5,7 @@ import { Validator } from "../../../../shared/http/middlewares/validator.middlew
 import { sendFriendRequestBodySchema } from "../validations/sendFriendRequest.validation";
 import { acceptFriendRequestParamsSchema } from "../validations/acceptFriendRequest.validation";
 import { rejectFriendRequestParamsSchema } from "../validations/rejectFriendRequest.validation";
+import { deleteFriendParamsSchema } from "../validations/deleteFriend.validation";
 
 export class FriendRouter {
   public router: Router;
@@ -18,6 +19,14 @@ export class FriendRouter {
     this.router
       .route("/")
       .get(Authenticator.protectHTTP(), this.friendController.getFriends);
+
+    this.router
+      .route("/:friendId")
+      .delete(
+        Authenticator.protectHTTP(),
+        Validator.validateParams(deleteFriendParamsSchema),
+        this.friendController.deleteFriend
+      );
 
     this.router
       .route("/requests")

@@ -115,4 +115,10 @@ export class PostgresFriendshipRepo implements FriendshipRepo {
       FriendshipMapper.toDomain(friendship, requester!)
     );
   }
+
+  public async delete(friendship: Friendship): Promise<void> {
+    await this.client
+      .delete(friendshipModel)
+      .where(eq(friendshipModel.id, friendship.id!));
+  }
 }

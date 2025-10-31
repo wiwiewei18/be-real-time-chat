@@ -5,6 +5,7 @@ import { FriendService } from "../services/friend.service";
 import { SendFriendRequestInput } from "../validations/sendFriendRequest.validation";
 import { AcceptFriendRequestInput } from "../validations/acceptFriendRequest.validation";
 import { RejectFriendRequestInput } from "../validations/rejectFriendRequest.validation";
+import { DeleteFriendInput } from "../validations/deleteFriend.validation";
 
 export class FriendController extends BaseController {
   constructor(private friendService: FriendService) {
@@ -18,6 +19,19 @@ export class FriendController extends BaseController {
 
     this.ok(res, "Friends list fetched successfully", getFriendsOutput);
   });
+
+  public deleteFriend = AsyncErrorHandler(
+    async (req: Request, res: Response) => {
+      const deleteFriendInput = req.params as DeleteFriendInput;
+
+      await this.friendService.deleteFriend(
+        deleteFriendInput,
+        (req as any).user.userId
+      );
+
+      this.ok(res, "Friend deleted successfully");
+    }
+  );
 
   public sendFriendRequest = AsyncErrorHandler(
     async (req: Request, res: Response) => {
