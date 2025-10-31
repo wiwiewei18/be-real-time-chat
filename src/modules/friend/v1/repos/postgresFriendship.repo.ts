@@ -91,4 +91,28 @@ export class PostgresFriendshipRepo implements FriendshipRepo {
       FriendshipMapper.toDomain(friendship, requester!, receiver!)
     );
   }
+
+  public async getFriendRequestsByReceiverId(
+    receiverId: string
+  ): Promise<Friendship[]> {
+    const requester = alias(userModel, "requester");
+
+    const friendshipList = await this.client
+      .select({
+        friendship: friendshipModel,
+        requester: requester,
+      })
+      .from(friendshipModel)
+      .leftJoin(requester, eq(requester.id, friendshipModel.requester_id))
+      .where(
+        and(
+          eq(friendshipModel.receiver_id, receiverId),
+          eq(friendshipModel.status, FriendshipStatus.Pending)
+        )
+      );
+
+    return friendshipList.map(({ friendship, requester }) =>
+      FriendshipMapper.toDomain(friendship, requester!)
+    );
+  }
 }

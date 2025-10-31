@@ -100,24 +100,11 @@ export class FriendService {
     }
 
     const friendshipList =
-      await this.friendshipRepo.getFriendshipsByUserIdAndStatus(
-        userId,
-        FriendshipStatus.Pending
-      );
-    if (!friendshipList.length) {
-      throw new CustomError(
-        StatusCode.NOT_FOUND,
-        "Friend requests list not found"
-      );
-    }
+      await this.friendshipRepo.getFriendRequestsByReceiverId(userId);
 
     return {
       friendRequests: friendshipList.map((friendship) =>
-        FriendshipMapper.toDTO(
-          friendship,
-          friendship.getRequester(),
-          friendship.getReceiver()
-        )
+        FriendshipMapper.toDTO(friendship, friendship.getRequester())
       ),
     };
   };

@@ -11,4 +11,5 @@ export interface FriendshipRepo {
     userId: string,
     status: FriendshipStatus
   ): Promise<Friendship[]>;
+  getFriendRequestsByReceiverId(receiverId: string): Promise<Friendship[]>;
 }
