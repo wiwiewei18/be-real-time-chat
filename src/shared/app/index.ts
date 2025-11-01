@@ -20,7 +20,13 @@ export class App {
   }
 
   private setupMiddlewares() {
-    this.app.use(cors());
+    this.app.use(
+      cors({
+        origin: "*",
+        methods: "*",
+        credentials: true,
+      })
+    );
     this.app.use(express.json());
   }
 
