@@ -2,14 +2,14 @@ import { Server } from "socket.io";
 import { Server as HttpServer } from "http";
 import { ChatModule } from "../../modules/chat/v1/chat.module";
 import { ChatModule as ChatModuleV2 } from "../../modules/chat/v2/chat.module";
-import { ChatListener } from "../../modules/chat/v1/listeners/chat.listener";
+import { ChatWSListener } from "../../modules/chat/v1/listeners/chat.ws.listener";
 import { ChatListener as ChatListenerV2 } from "../../modules/chat/v2/listeners/chat.listener";
 import { Authenticator } from "../../modules/auth/v1/middlewares/authenticator.middleware";
 
 export class WebSocket {
   public io: Server;
   private port: number;
-  private chatListener: ChatListener;
+  private chatWSListener: ChatWSListener;
   private chatListenerV2: ChatListenerV2;
 
   constructor(server: HttpServer, port: number) {
@@ -19,7 +19,7 @@ export class WebSocket {
       },
     });
     this.port = port;
-    this.chatListener = ChatModule.buildListener();
+    this.chatWSListener = ChatModule.buildListener();
     this.chatListenerV2 = ChatModuleV2.buildListener();
     this.setupListeners();
 
@@ -36,7 +36,7 @@ export class WebSocket {
         `User with Web Socket id ${webSocket.id} connected successfully`
       );
 
-      this.chatListener.initializeListeners(webSocket, this.io);
+      this.chatWSListener.initializeListeners(webSocket, this.io);
     });
 
     const v2Namespace = this.io.of("/v2");

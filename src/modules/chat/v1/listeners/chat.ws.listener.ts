@@ -1,16 +1,16 @@
 import { Socket, Server } from "socket.io";
-import { ChatController } from "../controllers/chat.controller";
+import { ChatWSController } from "../controllers/chat.ws.controller";
 
-export class ChatListener {
-  constructor(private chatController: ChatController) {}
+export class ChatWSListener {
+  constructor(private chatWSController: ChatWSController) {}
 
   public initializeListeners(webSocket: Socket, io: Server) {
     webSocket.on("register", (userId: string) => {
-      this.chatController.registerUser(webSocket, userId);
+      this.chatWSController.registerUser(webSocket, userId);
     });
 
     webSocket.on("private_message", ({ senderId, receiverId, content }) => {
-      this.chatController.sendPrivateMessage(io, {
+      this.chatWSController.sendPrivateMessage(io, {
         senderId,
         receiverId,
         content,
@@ -18,7 +18,7 @@ export class ChatListener {
     });
 
     webSocket.on("disconnect", () => {
-      this.chatController.disconnect(webSocket);
+      this.chatWSController.disconnect(webSocket);
     });
   }
 }

@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
 import { Message } from "../types/message.type";
 
-export class ChatService {
+export class ChatWSService {
   private onlineUsers: Map<string, string>;
 
   constructor() {
