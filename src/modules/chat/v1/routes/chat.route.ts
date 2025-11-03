@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { ChatController } from "../controllers/chat.controller";
+import { Authenticator } from "../../../auth/v1/middlewares/authenticator.middleware";
 
 export class ChatRouter {
   public router: Router;
@@ -10,6 +11,8 @@ export class ChatRouter {
   }
 
   private initializeRoutes() {
-    this.router.route("/").post(this.chatController.createChat);
+    this.router
+      .route("/")
+      .post(Authenticator.protectHTTP(), this.chatController.createChat);
   }
 }
