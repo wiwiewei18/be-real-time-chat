@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 
-export class ChatService {
+export class ChatWSService {
   public joinChat = (webSocket: Socket, chatId: string): void => {
     webSocket.join(`chat:${chatId}`);
   };

@@ -1,11 +1,11 @@
 import { Socket } from "socket.io";
-import { ChatService } from "../services/chat.service";
+import { ChatWSService } from "../services/chat.ws.service";
 
-export class ChatController {
-  constructor(private chatService: ChatService) {}
+export class ChatWSController {
+  constructor(private chatWSService: ChatWSService) {}
 
   public joinChat = (webSocket: Socket, chatId: string) => {
-    this.chatService.joinChat(webSocket, chatId);
+    this.chatWSService.joinChat(webSocket, chatId);
 
     console.log(
       `User with Web Socket id: ${webSocket.id} joined chat room chat:${chatId} successfully`
@@ -13,7 +13,7 @@ export class ChatController {
   };
 
   public leaveChat = (webSocket: Socket, chatId: string) => {
-    this.chatService.leaveChat(webSocket, chatId);
+    this.chatWSService.leaveChat(webSocket, chatId);
 
     console.log(
       `User with Web Socket id: ${webSocket.id} left chat room chat:${chatId} successfully`
@@ -21,7 +21,7 @@ export class ChatController {
   };
 
   public sendMessage = (webSocket: Socket, chatId: string, message: string) => {
-    this.chatService.sendMessage(webSocket, chatId, message);
+    this.chatWSService.sendMessage(webSocket, chatId, message);
 
     console.log(
       `User with Web Socket id: ${webSocket.id} sent message to chat room chat:${chatId} successfully`
