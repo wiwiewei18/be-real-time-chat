@@ -36,6 +36,13 @@
       "when": 1761113750123,
       "tag": "0004_crazy_micromacro",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1762163978095,
+      "tag": "0005_stiff_hemingway",
+      "breakpoints": true
     }
   ]
 }
