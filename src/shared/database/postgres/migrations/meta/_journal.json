@@ -43,6 +43,13 @@
       "when": 1762163978095,
       "tag": "0005_stiff_hemingway",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1762169765004,
+      "tag": "0006_fuzzy_wendell_vaughn",
+      "breakpoints": true
     }
   ]
 }
