@@ -38,4 +38,15 @@ export class PostgresChatParticipantRepo implements ChatParticipantRepo {
       ? ChatParticipantMapper.toDomain(chatParticipant[0])
       : null;
   }
+
+  public async delete(chatParticipant: ChatParticipant): Promise<void> {
+    await this.client
+      .delete(chatParticipantModel)
+      .where(
+        and(
+          eq(chatParticipantModel.chat_id, chatParticipant.chatId),
+          eq(chatParticipantModel.user_id, chatParticipant.userId)
+        )
+      );
+  }
 }

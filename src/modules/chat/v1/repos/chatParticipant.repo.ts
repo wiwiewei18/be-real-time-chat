@@ -6,4 +6,5 @@ export interface ChatParticipantRepo {
     chatId: string,
     userId: string
   ): Promise<ChatParticipant | null>;
+  delete(chatParticipant: ChatParticipant): Promise<void>;
 }

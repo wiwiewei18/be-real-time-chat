@@ -12,8 +12,8 @@ export class ChatWSController {
     );
   };
 
-  public leaveChat = (webSocket: Socket, chatId: string) => {
-    this.chatWSService.leaveChat(webSocket, chatId);
+  public leaveChat = async (webSocket: Socket, chatId: string) => {
+    await this.chatWSService.leaveChat(webSocket, chatId);
 
     console.log(
       `User with Web Socket id: ${webSocket.id} left chat room chat:${chatId} successfully`
