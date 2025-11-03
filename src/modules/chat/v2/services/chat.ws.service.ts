@@ -1,7 +1,32 @@
 import { Socket } from "socket.io";
+import { ChatParticipant } from "../../v1/domains/chatParticipant.domain";
+import { ChatParticipantRepo } from "../../v1/repos/chatParticipant.repo";
 
 export class ChatWSService {
-  public joinChat = (webSocket: Socket, chatId: string): void => {
+  constructor(private chatParticipantRepo: ChatParticipantRepo) {}
+
+  public joinChat = async (
+    webSocket: Socket,
+    chatId: string
+  ): Promise<void> => {
+    const existingChatParticipant =
+      await this.chatParticipantRepo.getChatParticipantByChatIdAndUserId(
+        chatId,
+        webSocket.data.user.userId
+      );
+
+    if (existingChatParticipant) {
+      webSocket.join(`chat:${chatId}`);
+      return;
+    }
+
+    const chatParticipant = new ChatParticipant(
+      chatId,
+      webSocket.data.user.userId
+    );
+
+    await this.chatParticipantRepo.save(chatParticipant);
+
     webSocket.join(`chat:${chatId}`);
   };
 
