@@ -13,8 +13,8 @@ Http:
   ✔ Get friend list,
   ✔ Remove friend
 - Chat:
-  - Create chat,
-  - Get chat list,
+  ✔ Create chat,
+  ✔ Get chat list,
   - Delete chat,
 - Message:
   - Get message list
@@ -25,6 +25,10 @@ Web socket:
   ✔ Join chat,
   ✔ Leave chat,
   ✔ Send/Receive message
+
+Bugs:
+
+- User 2 sends friend request to user 1 that already sent friend request to user 2
 
 ---
 

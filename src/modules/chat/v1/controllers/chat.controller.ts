@@ -13,4 +13,12 @@ export class ChatController extends BaseController {
 
     this.created(res, "Chat created successfully", createChatOutput);
   });
+
+  public getChats = AsyncErrorHandler(async (req: Request, res: Response) => {
+    const getChatsOutput = await this.chatService.getChats(
+      (req as any).user.userId
+    );
+
+    this.ok(res, "Chats list fetched successfully", getChatsOutput);
+  });
 }

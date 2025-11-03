@@ -13,6 +13,7 @@ export class ChatRouter {
   private initializeRoutes() {
     this.router
       .route("/")
-      .post(Authenticator.protectHTTP(), this.chatController.createChat);
+      .post(Authenticator.protectHTTP(), this.chatController.createChat)
+      .get(Authenticator.protectHTTP(), this.chatController.getChats);
   }
 }
