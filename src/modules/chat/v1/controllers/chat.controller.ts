@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { BaseController } from "../../../../shared/http/controllers/base.controller";
 import { AsyncErrorHandler } from "../../../../shared/http/utils/AsyncErrorHandler";
 import { ChatService } from "../services/chat.service";
+import { createChatInput } from "../validations/createChat.validation";
 
 export class ChatController extends BaseController {
   constructor(private chatService: ChatService) {
@@ -9,7 +10,9 @@ export class ChatController extends BaseController {
   }
 
   public createChat = AsyncErrorHandler(async (req: Request, res: Response) => {
-    const createChatOutput = await this.chatService.createChat();
+    const createChatInput: createChatInput = req.body;
+
+    const createChatOutput = await this.chatService.createChat(createChatInput);
 
     this.created(res, "Chat created successfully", createChatOutput);
   });

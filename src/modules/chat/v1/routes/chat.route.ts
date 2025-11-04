@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { ChatController } from "../controllers/chat.controller";
 import { Authenticator } from "../../../auth/v1/middlewares/authenticator.middleware";
+import { Validator } from "../../../../shared/http/middlewares/validator.middleware";
+import { createChatBodySchema } from "../validations/createChat.validation";
 
 export class ChatRouter {
   public router: Router;
@@ -13,7 +15,11 @@ export class ChatRouter {
   private initializeRoutes() {
     this.router
       .route("/")
-      .post(Authenticator.protectHTTP(), this.chatController.createChat)
+      .post(
+        Authenticator.protectHTTP(),
+        Validator.validateBody(createChatBodySchema),
+        this.chatController.createChat
+      )
       .get(Authenticator.protectHTTP(), this.chatController.getChats);
   }
 }
