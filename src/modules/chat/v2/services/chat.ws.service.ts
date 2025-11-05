@@ -10,27 +10,9 @@ export class ChatWSService {
     private messageRepo: MessageRepo
   ) {}
 
-  public joinChat = async (
-    webSocket: Socket,
-    chatId: string
-  ): Promise<void> => {
-    const existingChatParticipant =
-      await this.chatParticipantRepo.getChatParticipantByChatIdAndUserId(
-        chatId,
-        webSocket.data.user.userId
-      );
-
-    if (existingChatParticipant) {
-      webSocket.join(`chat:${chatId}`);
-      return;
-    }
-
-    const chatParticipant = new ChatParticipant(
-      chatId,
-      webSocket.data.user.userId
-    );
-
-    await this.chatParticipantRepo.save(chatParticipant);
+  public joinChat = (webSocket: Socket, chatId: string): void => {
+    // TODO:
+    // validate if participant of the room
 
     webSocket.join(`chat:${chatId}`);
   };

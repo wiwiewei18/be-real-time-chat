@@ -4,8 +4,8 @@ import { ChatWSService } from "../services/chat.ws.service";
 export class ChatWSController {
   constructor(private chatWSService: ChatWSService) {}
 
-  public joinChat = async (webSocket: Socket, chatId: string) => {
-    await this.chatWSService.joinChat(webSocket, chatId);
+  public joinChat = (webSocket: Socket, chatId: string) => {
+    this.chatWSService.joinChat(webSocket, chatId);
 
     console.log(
       `User with Web Socket id: ${webSocket.id} joined chat room chat:${chatId} successfully`

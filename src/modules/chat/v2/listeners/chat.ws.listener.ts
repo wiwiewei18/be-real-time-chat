@@ -5,8 +5,8 @@ export class ChatWSListener {
   constructor(private chatWsController: ChatWSController) {}
 
   public initializeListeners(webSocket: Socket, io: Server | Namespace) {
-    webSocket.on("chat:join", async (chatId: string) => {
-      await this.chatWsController.joinChat(webSocket, chatId);
+    webSocket.on("chat:join", (chatId: string) => {
+      this.chatWsController.joinChat(webSocket, chatId);
     });
 
     webSocket.on("chat:leave", async (chatId: string) => {
