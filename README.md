@@ -29,6 +29,8 @@ Web socket:
 Bugs:
 
 - User 2 sends friend request to user 1 that already sent friend request to user 2
+- Add chat name, participants
+- Create chat doesn't require senderId
 
 ---
 
