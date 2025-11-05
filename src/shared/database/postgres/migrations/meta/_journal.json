@@ -50,6 +50,13 @@
       "when": 1762169765004,
       "tag": "0006_fuzzy_wendell_vaughn",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1762309446686,
+      "tag": "0007_lively_iron_patriot",
+      "breakpoints": true
     }
   ]
 }
