@@ -13,10 +13,13 @@ export class PostgresMessageRepo implements MessageRepo {
     this.client = db.getClient();
   }
 
-  public async save(message: Message): Promise<void> {
-    await this.client
+  public async save(message: Message): Promise<Message> {
+    const result = await this.client
       .insert(messageModel)
-      .values(MessageMapper.toPersistence(message));
+      .values(MessageMapper.toPersistence(message))
+      .returning();
+
+    return MessageMapper.toDomain(result[0]);
   }
 
   public async getMessagesByChatId(chatId: string): Promise<Message[]> {

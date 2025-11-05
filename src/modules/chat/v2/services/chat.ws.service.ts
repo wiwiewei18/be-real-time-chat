@@ -1,8 +1,8 @@
 import { Socket } from "socket.io";
-import { ChatParticipant } from "../../v1/domains/chatParticipant.domain";
 import { ChatParticipantRepo } from "../../v1/repos/chatParticipant.repo";
 import { Message } from "../../v1/domains/message.domain";
 import { MessageRepo } from "../../v1/repos/message.repo";
+import { MessageMapper } from "../../../friend/v1/mappers/message.mapper";
 
 export class ChatWSService {
   constructor(
@@ -36,12 +36,10 @@ export class ChatWSService {
 
     const message = new Message(chatId, senderId, content);
 
-    await this.messageRepo.save(message);
+    const storedMessage = await this.messageRepo.save(message);
 
-    webSocket.to(`chat:${chatId}`).emit("chat:message.receive", {
-      chatId,
-      senderId,
-      content,
-    });
+    webSocket
+      .to(`chat:${chatId}`)
+      .emit("chat:message.receive", MessageMapper.toDTO(storedMessage));
   };
 }
