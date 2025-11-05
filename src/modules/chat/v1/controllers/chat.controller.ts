@@ -3,6 +3,7 @@ import { BaseController } from "../../../../shared/http/controllers/base.control
 import { AsyncErrorHandler } from "../../../../shared/http/utils/AsyncErrorHandler";
 import { ChatService } from "../services/chat.service";
 import { createChatInput } from "../validations/createChat.validation";
+import { GetMessagesInput } from "../validations/getMessages.validation";
 
 export class ChatController extends BaseController {
   constructor(private chatService: ChatService) {
@@ -24,4 +25,16 @@ export class ChatController extends BaseController {
 
     this.ok(res, "Chats list fetched successfully", getChatsOutput);
   });
+
+  public getMessages = AsyncErrorHandler(
+    async (req: Request, res: Response) => {
+      const getMessagesInput = req.params as GetMessagesInput;
+
+      const getMessagesOutput = await this.chatService.getMessages(
+        getMessagesInput
+      );
+
+      this.ok(res, "Messages list fetched successfully", getMessagesOutput);
+    }
+  );
 }

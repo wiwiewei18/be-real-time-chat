@@ -2,11 +2,15 @@ import { StatusCode } from "../../../../shared/http/constants/StatusCode";
 import CustomError from "../../../../shared/http/utils/CustomError";
 import { UserRepo } from "../../../auth/v1/repos/user.repo";
 import { ChatMapper } from "../../../friend/v1/mappers/chat.mapper";
+import { MessageMapper } from "../../../friend/v1/mappers/message.mapper";
 import { ChatParticipant } from "../domains/chatParticipant.domain";
 import { ChatDTOType } from "../dtos/chat.dto";
+import { MessageDTOType } from "../dtos/message.dto";
 import { ChatRepo } from "../repos/chat.repo";
 import { ChatParticipantRepo } from "../repos/chatParticipant.repo";
+import { MessageRepo } from "../repos/message.repo";
 import { createChatInput } from "../validations/createChat.validation";
+import { GetMessagesInput } from "../validations/getMessages.validation";
 
 type CreateChatOutput = {
   chat: ChatDTOType;
@@ -16,11 +20,14 @@ type GetChatsOutput = {
   chats: ChatDTOType[];
 };
 
+type GetMessagesOutput = { messages: MessageDTOType[] };
+
 export class ChatService {
   constructor(
+    private userRepo: UserRepo,
     private chatRepo: ChatRepo,
     private chatParticipantRepo: ChatParticipantRepo,
-    private userRepo: UserRepo
+    private messageRepo: MessageRepo
   ) {}
 
   public createChat = async (
@@ -64,6 +71,18 @@ export class ChatService {
 
     return {
       chats: chatList.map((chat) => ChatMapper.toDTO(chat)),
+    };
+  };
+
+  public getMessages = async (
+    getMessagesInput: GetMessagesInput
+  ): Promise<GetMessagesOutput> => {
+    const messageList = await this.messageRepo.getMessagesByChatId(
+      getMessagesInput.id
+    );
+
+    return {
+      messages: messageList.map((message) => MessageMapper.toDTO(message)),
     };
   };
 }

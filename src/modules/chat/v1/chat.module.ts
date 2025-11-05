@@ -8,17 +8,20 @@ import { ChatWSController } from "./controllers/chat.ws.controller";
 import { ChatWSListener } from "./listeners/chat.ws.listener";
 import { PostgresUserRepo } from "../../auth/v1/repos/postgresUser.repo";
 import { PostgresChatParticipantRepo } from "./repos/postgresChatParticipant.repo";
+import { PostgresMessageRepo } from "./repos/postgresMessage.repo";
 
 export class ChatModule {
   static buildRouter() {
     const db = new PostgresDatabase();
-    const chatRepo = new PostgresChatRepo(db);
     const userRepo = new PostgresUserRepo(db);
+    const chatRepo = new PostgresChatRepo(db);
     const chatParticipantRepo = new PostgresChatParticipantRepo(db);
+    const messageRepo = new PostgresMessageRepo(db);
     const chatService = new ChatService(
+      userRepo,
       chatRepo,
       chatParticipantRepo,
-      userRepo
+      messageRepo
     );
     const chatController = new ChatController(chatService);
     const chatRouter = new ChatRouter(chatController);
