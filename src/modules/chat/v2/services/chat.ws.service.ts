@@ -17,22 +17,9 @@ export class ChatWSService {
     webSocket.join(`chat:${chatId}`);
   };
 
-  public leaveChat = async (
-    webSocket: Socket,
-    chatId: string
-  ): Promise<void> => {
-    const chatParticipant =
-      await this.chatParticipantRepo.getChatParticipantByChatIdAndUserId(
-        chatId,
-        webSocket.data.user.userId
-      );
-
-    if (!chatParticipant) {
-      webSocket.leave(`chat:${chatId}`);
-      return;
-    }
-
-    await this.chatParticipantRepo.delete(chatParticipant);
+  public leaveChat = (webSocket: Socket, chatId: string): void => {
+    // TODO:
+    // validate if participant of the room
 
     webSocket.leave(`chat:${chatId}`);
   };

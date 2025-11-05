@@ -10,7 +10,7 @@ export class ChatWSListener {
     });
 
     webSocket.on("chat:leave", async (chatId: string) => {
-      await this.chatWsController.leaveChat(webSocket, chatId);
+      this.chatWsController.leaveChat(webSocket, chatId);
     });
 
     webSocket.on("chat:message.send", async ({ chatId, content }) => {
