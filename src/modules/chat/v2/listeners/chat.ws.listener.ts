@@ -13,8 +13,8 @@ export class ChatWSListener {
       await this.chatWsController.leaveChat(webSocket, chatId);
     });
 
-    webSocket.on("chat:message.send", ({ chatId, message }) => {
-      this.chatWsController.sendMessage(webSocket, chatId, message);
+    webSocket.on("chat:message.send", async ({ chatId, message }) => {
+      await this.chatWsController.sendMessage(webSocket, chatId, message);
     });
   }
 }

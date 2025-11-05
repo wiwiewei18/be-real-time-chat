@@ -20,8 +20,12 @@ export class ChatWSController {
     );
   };
 
-  public sendMessage = (webSocket: Socket, chatId: string, message: string) => {
-    this.chatWSService.sendMessage(webSocket, chatId, message);
+  public sendMessage = async (
+    webSocket: Socket,
+    chatId: string,
+    message: string
+  ) => {
+    await this.chatWSService.sendMessage(webSocket, chatId, message);
 
     console.log(
       `User with Web Socket id: ${webSocket.id} sent message to chat room chat:${chatId} successfully`
