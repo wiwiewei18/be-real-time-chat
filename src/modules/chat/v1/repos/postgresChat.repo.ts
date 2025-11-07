@@ -1,4 +1,4 @@
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import { Database } from "../../../../shared/database/database";
 import { PostgresClient } from "../../../../shared/database/postgres/postgresDatabase";
 import { Chat } from "../domains/chat.domain";
@@ -72,5 +72,18 @@ export class PostgresChatRepo implements ChatRepo {
     }
 
     return Array.from(chatMap.values());
+  }
+
+  public async getChatIdByUserIds(userIds: string[]): Promise<string | null> {
+    const result = await this.client
+      .select({ chatId: chatParticipantModel.chat_id })
+      .from(chatParticipantModel)
+      .where(inArray(chatParticipantModel.user_id, userIds))
+      .groupBy(chatParticipantModel.chat_id)
+      .having(
+        sql`COUNT(DISTINCT ${chatParticipantModel.user_id}) = ${userIds.length}`
+      );
+
+    return result.length ? result[0].chatId : null;
   }
 }

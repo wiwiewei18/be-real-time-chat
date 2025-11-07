@@ -47,6 +47,18 @@ export class ChatService {
       );
     }
 
+    const chatIdByUserIds = await this.chatRepo.getChatIdByUserIds(
+      participantUserIds
+    );
+
+    if (chatIdByUserIds) {
+      return {
+        chat: {
+          id: chatIdByUserIds,
+        },
+      };
+    }
+
     const chatId = await this.chatRepo.save();
 
     const chatParticipants = participantUserIds.map(
